@@ -157,6 +157,7 @@
 <body>
   <header>
     <h1>Your Shopping Cart</h1>
+    <p id="greeting"></p>
   </header>
 
   <main>
@@ -193,24 +194,24 @@
 
   <script>
      function loadCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-    const clearBtn = document.querySelector('.btn-clear');
-    cartItems.innerHTML = '';
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      const clearBtn = document.querySelector('.btn-clear');
+      cartItems.innerHTML = '';
 
-    let total = 0;
+     let total = 0;
 
-    if (cart.length === 0) {
+     if (cart.length === 0) {
       const row = document.createElement('tr');
       row.innerHTML = `<td colspan="6" style="text-align:center;">Your cart is empty 🛒</td>`;
       cartItems.appendChild(row);
       cartTotal.textContent = "Total: $0.00";
       clearBtn.style.display = "none"; // hide Clear Cart button
       return;
-    }
+     }
 
-    cart.forEach((item, index) => {
+     cart.forEach((item, index) => {
       const row = document.createElement('tr');
       const subtotal = item.price * item.quantity;
       total += subtotal;
@@ -224,40 +225,50 @@
         <td><button onclick="removeItem(${index})">❌ Remove</button></td>
       `;
       cartItems.appendChild(row);
-    });
+     });
 
-    cartTotal.textContent = "Total: $" + total.toFixed(2);
-    clearBtn.style.display = "inline-block"; // show Clear Cart button
-  }
+      cartTotal.textContent = "Total: $" + total.toFixed(2);
+      clearBtn.style.display = "inline-block"; // show Clear Cart button
+     }
 
-  function removeItem(index) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    loadCart();
-  }
+      function removeItem(index) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+      }
 
-  function clearCart() {
-    if (confirm('Are you sure you want to clear the cart?')) {
+      function clearCart() {
+      if (confirm('Are you sure you want to clear the cart?')) {
       localStorage.removeItem('cart');
       localStorage.removeItem('cartCount');
       loadCart();
-    }
-  }
+      }
+       }
 
-  window.onload = loadCart;
-  // Checkout button logic
-document.getElementById("btn-checkout").addEventListener("click", function () {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  if (cart.length === 0) {
-    alert("Your cart is empty 🛒. Please add items before checking out.");
-    return;
-  }
-  // Redirect to checkout page
-  window.location.href = "checkout.html";
-});
+          window.onload = loadCart;
+        // Checkout button logic
+       document.getElementById("btn-checkout").addEventListener("click", function () {
+       const cart = JSON.parse(localStorage.getItem("cart")) || [];
+       if (cart.length === 0) {
+         alert("Your cart is empty 🛒. Please add items before checking out.");
+       return;
+      }
+       // Redirect to checkout page
+      window.location.href = "checkout.html";
+        });
+     
 
-  </script>
+       const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!loggedInUser) {
+       // If no user is logged in, redirect to login page
+       window.location.href = "login.html";
+       }
+
+
+
+
+    </script>
        
 </body>
 </html>

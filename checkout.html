@@ -64,6 +64,7 @@
 <body>
   <div class="checkout-box">
     <h1>Checkout</h1>
+    <p id="greeting"></p>
     <h3>Your Order Summary 🛍️</h3>
     <table id="order-summary">
       <thead>
@@ -129,6 +130,13 @@
     }
 
     window.onload = loadOrder;
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!loggedInUser) {
+  window.location.href = "login.html"; // redirect if not logged in
+} else {
+    document.getElementById("greeting").textContent = `Hi, ${loggedInUser.name}!`;
+    }
+
   </script>
 </body>
 </html>

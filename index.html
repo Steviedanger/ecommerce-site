@@ -124,6 +124,8 @@
   <header>
     <h2><strong>MY CAMPUS PLUG</strong></h2>
     <a href="view-cart.html">🛒 View Cart (<span id="cart-count">0</span>)</a>
+    <p id="greeting"></p>
+    <button id="logoutBtn" style="float: right; padding: 5px 10px; cursor : pointer;">Logout</button>
   </header>
 
   <main>
@@ -204,6 +206,34 @@
      document.getElementById("year").textContent = new Date().getFullYear();
 
     
+     // Check if user is logged in
+  const currentUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+  if (!currentUser) {
+    // Not logged in, redirect to login page
+    alert("You must log in first!");
+    window.location.href = 'login.html';
+  } else {
+    // Optionally, show welcome message
+    console.log("Welcome, " + currentUser.name);
+    document.getElementById("greeting").textContent= "Hello, " + currentUser.name + "!";
+  }
+   
+
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+  localStorage.removeItem('loggedInUser'); // remove logged-in session
+  alert("You have been logged out.");
+  window.location.href = "login.html"; // redirect to login page
+  });
+
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!loggedInUser) {
+  // If no user is logged in, redirect to login page
+  window.location.href = "login.html";
+  }
+
+
+
 
 
 
