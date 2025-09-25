@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSx_THhCHDad_b6MuuFzp5sA2ndDzVkxVcbg&s");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .checkout-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 700px;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #f8f8f8;
+    }
+    img {
+      width: 60px;
+      height: auto;
+      border-radius: 4px;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="checkout-box">
+    <h1>Checkout</h1>
+    <h3>Your Order Summary 🛍️</h3>
+    <table id="order-summary">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Price ($)</th>
+          <th>Quantity</th>
+          <th>Subtotal ($)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Items will load here -->
+      </tbody>
+    </table>
+    <p id="order-total"><strong>Total: $0.00</strong></p>
+    <p>✅ Thank you for shopping with us! Your order has been placed.</p>
+    <button onclick="goHome()">← Continue Shopping</button>
+  </div>
+
+  <script>
+    function loadOrder() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const tableBody = document.querySelector("#order-summary tbody");
+      const totalElement = document.getElementById("order-total");
+      let total = 0;
+
+      tableBody.innerHTML = "";
+
+      if (cart.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5">Your cart is empty 🛒</td></tr>`;
+        totalElement.textContent = "Total: $0.00";
+        return;
+      }
+
+      cart.forEach(item => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>
+            <a href="${item.img}" target="_blank">
+               <img src="${item.img}" alt="${item.name}">
+            </a>
+          </td>
+          <td>${item.name}</td>
+          <td>${item.price.toFixed(2)}</td>
+          <td>${item.quantity}</td>
+          <td>${subtotal.toFixed(2)}</td>
+`       ;
+
+        tableBody.appendChild(row);
+      });
+
+      totalElement.textContent = "Total: $" + total.toFixed(2);
+    }
+
+    function goHome() {
+      localStorage.removeItem("cart");
+      localStorage.removeItem("cartCount");
+      window.location.href = "index.html";
+    }
+
+    window.onload = loadOrder;
+  </script>
+</body>
+</html>
